@@ -1,11 +1,18 @@
 import mongoose from "mongoose";
 
-mongoose.connect('mongodb://localhost:21017/nodepop');
+async function connectMongoose() {
+    try {
+        await mongoose.connect('mongodb://localhost:27017/nodepop', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Conectado a MongoDB');
+    } catch (error) {
+        console.error('Error en la conexión a MongoDB:', error);
+        process.exit(1); // Finaliza el proceso si no se puede conectar
+    }
+}
 
-const db = mongoose.connection;
+export default connectMongoose;
 
-db.on('error', (error) => console.log('Mongodb conexion error', error));
-db.once('open', () => console.log('conected to mongodb'));
-
-module.exports = mongoose
 

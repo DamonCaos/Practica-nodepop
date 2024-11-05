@@ -1,19 +1,10 @@
-var express = require('express');
-var router = express.Router();
-import Product from '../models/product.js'
+import express from 'express';
+const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index');  
 });
 
-router.get('/', async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
+export default router;
 
-module.exports = router;
