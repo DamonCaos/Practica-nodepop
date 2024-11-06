@@ -6,15 +6,16 @@ import createError from 'http-errors';
 import mongoose from './config/connectMongoose.js';
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
+import { fileURLToPath } from 'url';
 
-// Obtener el __dirname en un módulo ES6
-const __filename = new URL(import.meta.url).pathname;
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 const app = express();
 
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set('views', path.resolve(__dirname, 'views'));
 
 app.use(logger('dev'));
 app.use(express.json());
