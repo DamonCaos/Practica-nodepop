@@ -15,6 +15,11 @@
         <a href="/">Home</a>
         <a href="/login">Login</a>
         <a href="/contact">Contact</a>
+        <% if (session.isAuthenticated) { %>
+            <a href="/products">
+                <button type="button">Gestionar Productos</button>
+            </a>
+        <% } %>
     </nav>
 </body>
 </html>

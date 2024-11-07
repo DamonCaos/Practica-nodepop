@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <h1>Gestión de Productos</h1>
+
+    <h2>Crear Producto</h2>
+    <form action="/products/create" method="POST">
+        <input type="text" name="name" placeholder="Nombre" required>
+        <input type="text" name="owner" placeholder="Propietario" required>
+        <input type="number" name="price" placeholder="Precio" required>
+        <input type="text" name="image" placeholder="URL de la imagen">
+        <input type="text" name="tags" placeholder="Tags (separados por comas)">
+        <button type="submit">Crear</button>
+    </form>
+
+    <h2>Lista de Productos</h2>
+    <ul>
+        <% products.forEach(product => { %>
+            <li>
+                <strong><%= product.name %></strong> - <%= product.price %> €
+                <form action="/products/edit/<%= product._id %>" method="POST" style="display:inline;">
+                    <input type="text" name="name" value="<%= product.name %>" required>
+                    <input type="text" name="owner" value="<%= product.owner %>" required>
+                    <input type="number" name="price" value="<%= product.price %>" required>
+                    <input type="text" name="image" value="<%= product.image %>">
+                    <input type="text" name="tags" value="<%= product.tags.join(',') %>">
+                    <button type="submit">Actualizar</button>
+                </form>
+                <form action="/products/delete/<%= product._id %>" method="POST" style="display:inline;">
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

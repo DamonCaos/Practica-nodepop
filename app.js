@@ -10,6 +10,7 @@ import usersRouter from './routes/users.js';
 import User from './models/User.js';
 import { fileURLToPath } from 'url';
 import productsRouter from './routes/products.js';
+import session from 'express-session';
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -27,6 +28,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/products', productsRouter);
+app.use(
+  session({
+    secret: 'dkjbaljdsvblajvs',
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
 // Iniciar conexión y cargar base de datos
 async function startServer() {
@@ -58,26 +66,31 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body; // Cambia 'username' a 'email'
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error al cerrar sesión:', err);
+    }
+    res.redirect('/login');
+  });
+});
 
-  console.log(`Intento de login con el email: ${email}`);
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: username });
 
     if (!user) {
-      console.log(`Login fallido: Usuario no encontrado`);
       return res.render('login', { error: 'Usuario o contraseña incorrectos' });
     }
 
     const isMatch = await user.comparePassword(password);
 
     if (isMatch) {
-      console.log(`Login exitoso con el email: ${email}`);
+      req.session.isAuthenticated = true; // Establece la sesión como autenticada
       res.redirect('/');
     } else {
-      console.log(`Login fallido: Contraseña incorrecta`);
       res.render('login', { error: 'Usuario o contraseña incorrectos' });
     }
   } catch (error) {
