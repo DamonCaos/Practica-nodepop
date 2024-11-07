@@ -56,12 +56,12 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body; // Cambia 'username' a 'email'
 
-  console.log(`Intento de login con el email: ${username}`);
+  console.log(`Intento de login con el email: ${email}`);
 
   try {
-    const user = await User.findOne({ email: username });
+    const user = await User.findOne({ email });
 
     if (!user) {
       console.log(`Login fallido: Usuario no encontrado`);
@@ -71,7 +71,7 @@ app.post('/login', async (req, res) => {
     const isMatch = await user.comparePassword(password);
 
     if (isMatch) {
-      console.log(`Login exitoso con el email: ${username}`);
+      console.log(`Login exitoso con el email: ${email}`);
       res.redirect('/');
     } else {
       console.log(`Login fallido: Contraseña incorrecta`);
@@ -82,6 +82,7 @@ app.post('/login', async (req, res) => {
     res.render('login', { error: 'Hubo un error al procesar tu solicitud' });
   }
 });
+
 
 app.use('/users', usersRouter);
 
