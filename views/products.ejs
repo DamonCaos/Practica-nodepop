@@ -2,40 +2,58 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Productos</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="../public/stylesheets/products.css">
 </head>
 <body>
-    <h1>Gestión de Productos</h1>
 
-    <h2>Crear Producto</h2>
-    <form action="/products/create" method="POST">
-        <input type="text" name="name" placeholder="Nombre" required>
-        <input type="text" name="owner" placeholder="Propietario" required>
-        <input type="number" name="price" placeholder="Precio" required>
-        <input type="text" name="image" placeholder="URL de la imagen">
-        <input type="text" name="tags" placeholder="Tags (separados por comas)">
-        <button type="submit">Crear</button>
-    </form>
+    <header class="header">
+        <h1>Gestión de Productos</h1>
+    </header>
 
-    <h2>Lista de Productos</h2>
-    <ul>
-        <% products.forEach(product => { %>
-            <li>
-                <strong><%= product.name %></strong> - <%= product.price %> €
-                <form action="/products/edit/<%= product._id %>" method="POST" style="display:inline;">
-                    <input type="text" name="name" value="<%= product.name %>" required>
-                    <input type="text" name="owner" value="<%= product.owner %>" required>
-                    <input type="number" name="price" value="<%= product.price %>" required>
-                    <input type="text" name="image" value="<%= product.image %>">
-                    <input type="text" name="tags" value="<%= product.tags.join(',') %>">
-                    <button type="submit">Actualizar</button>
-                </form>
-                <form action="/products/delete/<%= product._id %>" method="POST" style="display:inline;">
-                    <button type="submit">Eliminar</button>
-                </form>
-            </li>
-        <% }) %>
-    </ul>
+    <% if (session.isAuthenticated) { %>
+        <section class="product-form-container">
+            <h2>Crear Producto</h2>
+            <form action="/products/create" method="POST" class="product-form">
+                <input type="text" name="name" placeholder="Nombre" required>
+                <input type="text" name="owner" placeholder="Propietario" required>
+                <input type="number" name="price" placeholder="Precio" required>
+                <input type="text" name="image" placeholder="URL de la imagen">
+                <input type="text" name="tags" placeholder="Tags (separados por comas)">
+                <button type="submit" class="btn">Crear</button>
+            </form>
+        </section>
+
+        <section class="product-list-container">
+            <h2>Lista de Productos</h2>
+            <ul class="product-list">
+                <% products.forEach(function(product) { %>
+                    <li class="product-item">
+                        <strong><%= product.name %></strong> - <%= product.price %> €
+                        <form action="/products/edit/<%= product._id %>" method="POST" class="product-edit-form">
+                            <input type="text" name="name" value="<%= product.name %>" required>
+                            <input type="text" name="owner" value="<%= product.owner %>" required>
+                            <input type="number" name="price" value="<%= product.price %>" required>
+                            <input type="text" name="image" value="<%= product.image %>">
+                            <input type="text" name="tags" value="<%= product.tags.join(',') %>">
+                            <button type="submit" class="btn">Actualizar</button>
+                        </form>
+                        <form action="/products/delete/<%= product._id %>" method="POST" class="product-delete-form">
+                            <button type="submit" class="btn">Eliminar</button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+        </section>
+    <% } else { %>
+        <p>No estás autenticado. <a href="/login">Inicia sesión</a> para gestionar productos.</p>
+    <% } %>
+
+    <footer>
+        <p>&copy; 2024 NodePop - Todos los derechos reservados</p>
+    </footer>
+
 </body>
 </html>
+

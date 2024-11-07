@@ -1,0 +1,64 @@
+
+.product-form-container {
+    margin: 20px;
+}
+
+.product-form input,
+.product-form button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 1em;
+}
+
+.product-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.product-form button:hover {
+    background-color: #45a049;
+}
+
+/* Para la lista de productos */
+.product-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.product-item {
+    background: #f4f4f4;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.product-item strong {
+    font-size: 1.2em;
+}
+
+.product-actions button {
+    margin: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.product-actions button:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}

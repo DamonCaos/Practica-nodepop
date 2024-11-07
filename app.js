@@ -59,7 +59,7 @@ startServer();
 
 // Rutas
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', { session: req.session });
 });
 
 app.get('/login', (req, res) => {
@@ -76,10 +76,11 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+  console.log(`intento de login con el email: ${email}`)
 
   try {
-    const user = await User.findOne({ email: username });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.render('login', { error: 'Usuario o contraseña incorrectos' });
