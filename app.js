@@ -9,6 +9,7 @@ import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import User from './models/User.js';
 import { fileURLToPath } from 'url';
+import productsRouter from './routes/products.js';
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -19,11 +20,13 @@ const app = express();
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/products', productsRouter);
 
 // Iniciar conexión y cargar base de datos
 async function startServer() {
