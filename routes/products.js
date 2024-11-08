@@ -1,17 +1,23 @@
 import express from 'express';
 import Product from '../models/product.js'; 
+import product from '../models/product.js';
 const router = express.Router();
 
 // Listar productos
 router.get('/', async (req, res) => {
     try {
         const products = await Product.find();
-        res.render('products', { products });
+        res.render('products', { products, session: req.session });
     } catch (error) {
         console.error('Error al listar productos:', error);
         res.status(500).send('Error interno del servidor');
     }
 });
+
+
+
+
+
 
 // Crear nuevo producto
 router.post('/create', async (req, res) => {

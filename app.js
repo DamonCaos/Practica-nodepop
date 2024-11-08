@@ -7,17 +7,32 @@ import connectMongoose from './config/connectMongoose.js';
 import initDB from './initDB.js';
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
-import User from './models/User.js';
-import { fileURLToPath } from 'url';
 import productsRouter from './routes/products.js';
+import User from './models/User.js';
 import session from 'express-session';
+import { fileURLToPath } from 'url';
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const app = express();
+
+// Configurar el middleware de sesión antes de cualquier ruta
+app.use(
+  session({
+    secret: 'dkjbaljdsvblajvs',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+  })
+);
+
+// Hacer que `session` esté disponible en todas las vistas
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+});
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -27,37 +42,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/products', productsRouter);
-app.use(
-  session({
-    secret: 'dkjbaljdsvblajvs',
-    resave: false,
-    saveUninitialized: false
-  })
-);
 
-// Iniciar conexión y cargar base de datos
-async function startServer() {
-  try {
-    // Conectar a MongoDB
-    await connectMongoose();
-
-    // Inicializar la base de datos
-    await initDB();
-
-    // Iniciar el servidor solo después de inicializar la base de datos
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Servidor escuchando en http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error('Error al iniciar el servidor:', error);
-  }
-}
-
-startServer();
-
-// Rutas
+// Rutas principales
 app.get('/', (req, res) => {
   res.render('index', { session: req.session });
 });
@@ -77,19 +63,17 @@ app.get('/logout', (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log(`intento de login con el email: ${email}`)
+  console.log(`Intento de login con el email: ${email}`);
 
   try {
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.render('login', { error: 'Usuario o contraseña incorrectos' });
     }
 
     const isMatch = await user.comparePassword(password);
-
     if (isMatch) {
-      req.session.isAuthenticated = true; // Establece la sesión como autenticada
+      req.session.isAuthenticated = true;
       res.redirect('/');
     } else {
       res.render('login', { error: 'Usuario o contraseña incorrectos' });
@@ -100,7 +84,8 @@ app.post('/login', async (req, res) => {
   }
 });
 
-
+// Cargar rutas después de la configuración de sesión y middleware
+app.use('/products', productsRouter);
 app.use('/users', usersRouter);
 
 // Manejo de errores 404
@@ -118,3 +103,19 @@ app.use((err, req, res, next) => {
 });
 
 export default app;
+
+// Iniciar conexión y cargar base de datos
+async function startServer() {
+  try {
+    await connectMongoose();
+    await initDB();
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Servidor escuchando en http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Error al iniciar el servidor:', error);
+  }
+}
+
+startServer();
