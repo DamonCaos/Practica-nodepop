@@ -14,6 +14,27 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Middleware de autorización
+function checkAdmin(req, res, next) {
+    if (req.session.user && req.session.user.role === 'admin') {
+        return next(); // Si el usuario es admin, continúa con la ruta
+    } else {
+        return res.status(403).send('No tienes permisos para realizar esta acción');
+    }
+}
+
+
+router.post('/create', checkAdmin, async (req, res) => {
+    
+});
+
+router.put('/edit/:id', checkAdmin, async (req, res) => {
+    
+});
+
+router.delete('/delete/:id', checkAdmin, async (req, res) => {
+    
+});
 
 
 
