@@ -11,6 +11,7 @@ import productsRouter from './routes/products.js';
 import User from './models/User.js';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
+import bcrypt from 'bcrypt'
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -39,7 +40,7 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -60,27 +61,37 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
   });
 });
-
+// Ruta de login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);  
+
   console.log(`Intento de login con el email: ${email}`);
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('Usuario no encontrado');
       return res.render('login', { error: 'Usuario o contraseña incorrectos' });
     }
 
-    const isMatch = await user.comparePassword(password);
+    console.log('Usuario encontrado:', user.email);
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Contraseña coincidente:', isMatch);  
+    
+    
     if (isMatch) {
       req.session.isAuthenticated = true;
-      res.redirect('/');
+      req.session.user = user;  // Guardar el usuario en la sesión
+      return res.redirect('/');
     } else {
-      res.render('login', { error: 'Usuario o contraseña incorrectos' });
+      console.log('Contraseña incorrecta');
+      return res.render('login', { error: 'Usuario o contraseña incorrectos' });
     }
   } catch (error) {
     console.error('Error al procesar el login:', error);
-    res.render('login', { error: 'Hubo un error al procesar tu solicitud' });
+    return res.render('login', { error: 'Hubo un error al procesar tu solicitud' });
   }
 });
 

@@ -6,7 +6,7 @@ async function connectMongoose() {
         console.log('Conectado a MongoDB');
     } catch (error) {
         console.error('Error en la conexión a MongoDB:', error);
-        process.exit(1); // Finaliza el proceso si no se puede conectar
+        process.exit(1);
     }
 }
 

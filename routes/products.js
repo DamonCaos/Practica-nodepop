@@ -1,6 +1,5 @@
 import express from 'express';
-import Product from '../models/product.js'; 
-import product from '../models/product.js';
+import Product from '../models/product.js';
 const router = express.Router();
 
 // Listar productos
@@ -33,7 +32,7 @@ router.put('/edit/:id', checkAdmin, async (req, res) => {
 });
 
 router.delete('/delete/:id', checkAdmin, async (req, res) => {
-    
+    // Lógica para eliminar un producto
 });
 
 

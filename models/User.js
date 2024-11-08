@@ -23,6 +23,10 @@ userSchema.pre('save', async function(next) {
 
 
 userSchema.methods.comparePassword = function(plainPassword) {
+    console.log('Contraseña ingresada:', plainPassword);  // Log de la contraseña ingresada
+    console.log('Longitud contraseña ingresada:', plainPassword.length);  // Verifica la longitud de la contraseña ingresada
+    console.log('Contraseña almacenada (hash):', this.password);  // Log del hash almacenado
+    console.log('Longitud contraseña almacenada (hash):', this.password.length);  // Verifica la longitud del hash
     return bcrypt.compare(plainPassword, this.password);
 };
 
