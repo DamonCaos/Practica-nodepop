@@ -1,6 +1,16 @@
 .header {
     display: flex;
-    align-items: center;
+    justify-content: center;  
+    align-items: center;      
+    height: 10vh;              
+    text-align: center;       
+    margin: 0;                
+}
+
+.header h1 {
+    font-size: 2rem;          
+    color: #333;              
+    margin: 0;               
 }
 
 

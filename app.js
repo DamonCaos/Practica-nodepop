@@ -11,7 +11,7 @@ import productsRouter from './routes/products.js';
 import User from './models/User.js';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -64,7 +64,6 @@ app.get('/logout', (req, res) => {
 // Ruta de login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);  
 
   console.log(`Intento de login con el email: ${email}`);
 
@@ -76,14 +75,15 @@ app.post('/login', async (req, res) => {
     }
 
     console.log('Usuario encontrado:', user.email);
+    console.log('Contraseña ingresada:', password);
+    console.log('Contraseña almacenada(hashed)', user.password)
 
     const isMatch = await bcrypt.compare(password, user.password);
     console.log('Contraseña coincidente:', isMatch);  
-    
-    
+
     if (isMatch) {
       req.session.isAuthenticated = true;
-      req.session.user = user;  // Guardar el usuario en la sesión
+      req.session.user = user;  
       return res.redirect('/');
     } else {
       console.log('Contraseña incorrecta');
@@ -94,6 +94,8 @@ app.post('/login', async (req, res) => {
     return res.render('login', { error: 'Hubo un error al procesar tu solicitud' });
   }
 });
+
+
 
 // Cargar rutas después de la configuración de sesión y middleware
 app.use('/products', productsRouter);

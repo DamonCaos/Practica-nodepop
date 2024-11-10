@@ -1,0 +1,46 @@
+/* Estilos globales para asegurar que el body ocupe toda la altura de la pantalla */
+html, body {
+    height: 100%; /* Asegura que el body ocupe toda la altura de la pantalla */
+    margin: 0; /* Elimina los márgenes predeterminados */
+    display: flex;
+    flex-direction: column; /* Alinea los elementos de forma vertical */
+  }
+  
+  /* Estilos para el contenido principal */
+  main {
+    flex: 1; /* Esto hace que el contenido principal ocupe el espacio disponible */
+  }
+  
+  /* Estilos para el footer */
+  .footer {
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
+    text-align: center; /* Centrado del texto */
+    padding: 20px 0; /* Espaciado vertical */
+    position: relative; /* Permite el uso de posicionamiento relativo si se necesita */
+    bottom: 0;
+    width: 100%;
+    margin-top: auto; /* Asegura que el footer se quede en la parte inferior */
+  }
+  
+  .footer p {
+    margin: 0;
+    font-size: 14px; /* Tamaño de fuente pequeño */
+  }
+  
+  .footer a {
+    color: #fff; /* Color del enlace blanco */
+    text-decoration: none; /* Quitar subrayado */
+  }
+  
+  .footer a:hover {
+    text-decoration: underline; /* Subrayado en el hover */
+  }
+  
+  /* Estilo responsivo */
+  @media (max-width: 768px) {
+    .footer p {
+      font-size: 12px; /* Tamaño de fuente más pequeño en dispositivos móviles */
+    }
+  }
+  
