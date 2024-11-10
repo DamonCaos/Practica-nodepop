@@ -17,6 +17,7 @@ import bcrypt from 'bcryptjs'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 const app = express();
 
 // Configurar el middleware de sesión antes de cualquier ruta
@@ -43,6 +44,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Rutas principales
 app.get('/', (req, res) => {

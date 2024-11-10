@@ -58,7 +58,7 @@ async function initDB() {
       name: 'Stereo Headset',
       owner: user1._id,  // Asociar producto a user1
       price: 100,
-      image: 'product1.jpg',
+      image: 'images/headset.jpg',
       tags: ['electronics', 'new']
     });
     await product1.save();
@@ -68,7 +68,7 @@ async function initDB() {
       name: 'PS5',
       owner: user1._id,  // Asociar producto a user1
       price: 200,
-      image: 'product2.jpg',
+      image: 'images/ps5.jpg',
       tags: ['VideoGames', 'sale']
     });
     await product2.save();
@@ -78,7 +78,7 @@ async function initDB() {
       name: 'Necronomicon',
       owner: user2._id,  // Asociar producto a user2
       price: 150,
-      image: 'product3.jpg',
+      image: 'images/necronomicon.jpg',
       tags: ['books', 'sale']
     });
     await product3.save();
@@ -88,7 +88,7 @@ async function initDB() {
       name: 'Guitar bundle',
       owner: user2._id,  // Asociar producto a user2
       price: 80,
-      image: 'product4.jpg',
+      image: 'images/guitar_bundle.jpg',
       tags: ['music', 'new']
     });
     await product4.save();
