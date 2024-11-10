@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import User from './models/User.js';
+import Product from './models/Product.js';  
 
 const SALT_ROUNDS = 10;
 
 async function initDB() {
   try {
-    // Eliminar todos los usuarios existentes antes de crear nuevos
+    // Eliminar todos los usuarios y productos existentes antes de crear nuevos
     await User.deleteMany(); // Borra todos los usuarios actuales
+    await Product.deleteMany(); // Borra todos los productos actuales
 
     // Crear un usuario admin con contraseña hasheada
     const password1 = 'password1';
@@ -51,11 +53,53 @@ async function initDB() {
     await user2.save();
     console.log('Usuario user2@example.com creado con contraseña hasheada:', hashedPassword3);
 
+    // Crear productos para los usuarios
+    const product1 = new Product({
+      name: 'Stereo Headset',
+      owner: user1._id,  // Asociar producto a user1
+      price: 100,
+      image: 'product1.jpg',
+      tags: ['electronics', 'new']
+    });
+    await product1.save();
+    console.log('Producto 1 creado para el usuario user1@example.com');
+
+    const product2 = new Product({
+      name: 'PS5',
+      owner: user1._id,  // Asociar producto a user1
+      price: 200,
+      image: 'product2.jpg',
+      tags: ['VideoGames', 'sale']
+    });
+    await product2.save();
+    console.log('Producto 2 creado para el usuario user1@example.com');
+
+    const product3 = new Product({
+      name: 'Necronomicon',
+      owner: user2._id,  // Asociar producto a user2
+      price: 150,
+      image: 'product3.jpg',
+      tags: ['books', 'sale']
+    });
+    await product3.save();
+    console.log('Producto 3 creado para el usuario user2@example.com');
+
+    const product4 = new Product({
+      name: 'Guitar bundle',
+      owner: user2._id,  // Asociar producto a user2
+      price: 80,
+      image: 'product4.jpg',
+      tags: ['music', 'new']
+    });
+    await product4.save();
+    console.log('Producto 4 creado para el usuario user2@example.com');
+
   } catch (error) {
     console.error('Error al inicializar la base de datos:', error);
   }
 }
 
 export default initDB;
+
 
 
