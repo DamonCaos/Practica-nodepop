@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import User from './models/User.js';
-import Product from './models/Product.js';  
+import Product from './models/product.js';  
 
 const SALT_ROUNDS = 10;
 
