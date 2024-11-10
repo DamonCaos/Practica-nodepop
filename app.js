@@ -66,6 +66,7 @@ app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   console.log(`Intento de login con el email: ${email}`);
+  console.log('Contraseña ingresada:', password);
 
   try {
     const user = await User.findOne({ email });
@@ -79,7 +80,9 @@ app.post('/login', async (req, res) => {
     console.log('Contraseña almacenada(hashed)', user.password)
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Contraseña coincidente:', isMatch);  
+    console.log('Contraseña ingresada:', password);
+    console.log('Contraseña almacenada en DB:', user.password);
+    console.log('Contraseña coincidente:', isMatch);  // Esto debería devolver `true` si es correcto
 
     if (isMatch) {
       req.session.isAuthenticated = true;

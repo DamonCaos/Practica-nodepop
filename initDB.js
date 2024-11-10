@@ -11,10 +11,12 @@ async function initDB() {
 
     // Crear un usuario admin con contraseña hasheada
     const password1 = 'password1';
+    console.log('Contraseña antes de ser hasheada (admin):', password1);
     const hashedPassword1 = await bcrypt.hash(password1, SALT_ROUNDS);  // Hashear contraseña
+    console.log('Contraseña hasheada (admin):', hashedPassword1);
     const adminUser = new User({
       email: 'admin@example.com',
-      password: hashedPassword1,
+      password: 'password1',
       name: 'admin',
       role: 'admin'
     });
@@ -23,10 +25,12 @@ async function initDB() {
 
     // Crear user1 con contraseña hasheada
     const password2 = 'password2';
+    console.log('Contraseña antes de ser hasheada (user1):', password2);
     const hashedPassword2 = await bcrypt.hash(password2, SALT_ROUNDS);  // Hashear contraseña
+    console.log('Contraseña hasheada (user1):', hashedPassword2);
     const user1 = new User({
       email: 'user1@example.com',
-      password: hashedPassword2,
+      password: 'password2',
       name: 'User 1',
       role: 'user'
     });
@@ -35,10 +39,12 @@ async function initDB() {
 
     // Crear user2 con contraseña hasheada
     const password3 = 'password3';
+    console.log('Contraseña antes de ser hasheada (user2):', password3);
     const hashedPassword3 = await bcrypt.hash(password3, SALT_ROUNDS);  // Hashear contraseña
+    console.log('Contraseña hasheada (user2):', hashedPassword3);
     const user2 = new User({
       email: 'user2@example.com',
-      password: hashedPassword3,
+      password: 'password3',
       name: 'User 2',
       role: 'user'
     });
@@ -51,4 +57,5 @@ async function initDB() {
 }
 
 export default initDB;
+
 
