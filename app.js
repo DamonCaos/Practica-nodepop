@@ -12,11 +12,11 @@ import User from './models/User.js';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs'
+import i18n from 'i18n';
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 const app = express();
 
@@ -36,6 +36,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(i18n.init);
+app.use((req, res, next)=> {
+  const locale = req.query.lang || req.cookies['nodeapp-locale'] || 'en'
+  res.setLocale(locale)
+  next();
+});
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -47,6 +53,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Rutas principales
+app.get('/', (req, res) => {
+  res.send(res.__('wellcome_message'))
+});
 app.get('/', (req, res) => {
   res.render('index', { session: req.session });
 });
