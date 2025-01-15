@@ -1,14 +1,15 @@
-import { I18n } from 'i18n'
-import path from 'node:path'
-import { __dirname } from './utils.js'
+import i18n from 'i18n';
+import path from 'node:path';
+import { __dirname } from './utils.js';
 
-const i18n = new I18n({
+i18n.configure({
   locales: ['en', 'es'],
   directory: path.join(__dirname, '..', 'locales'),
   defaultLocale: 'en',
-  autoReload: true, // watch for changes in JSON files to reload locale on updates - defaults to false
-  syncFiles: true, // sync locale information across all files - defaults to false
+  autoReload: true,
+  syncFiles: true,
   cookie: 'nodeapp-locale',
-})
+  //logWarnFn: console.warn 
+});
 
-export default i18n
+export default i18n;

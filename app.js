@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import createError from 'http-errors';
 import connectMongoose from './config/connectMongoose.js';
-import initDB from '../initDB.js';
+import initDB from './initDB.js';
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import productsRouter from './routes/products.js';
@@ -29,26 +29,30 @@ app.use(
     cookie: { secure: false },
   })
 );
-
+app.use(cookieParser());
+app.use(i18n.init);
 // Hacer que `session` esté disponible en todas las vistas
 app.use((req, res, next) => {
   res.locals.session = req.session;
   next();
 });
-
-app.use(i18n.init);
 app.use((req, res, next)=> {
   const locale = req.query.lang || req.cookies['nodeapp-locale'] || 'en'
   res.setLocale(locale)
+  if (!req.cookies['nodeapp-locale']) {
+    res.cookie('nodeapp-locale',locale, {maxAge: 90000, httpOnly:true})
+  }
   next();
 });
+
+
+
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
