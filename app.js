@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import createError from 'http-errors';
 import connectMongoose from './config/connectMongoose.js';
-import initDB from './initDB.js';
+import initDB from '../initDB.js';
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import productsRouter from './routes/products.js';
