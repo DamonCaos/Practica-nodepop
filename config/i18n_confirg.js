@@ -4,12 +4,12 @@ import { __dirname } from './utils.js';
 
 i18n.configure({
   locales: ['en', 'es'],
-  directory: path.join(__dirname, '..', 'locales'),
+  directory: path.join(__dirname, '..', 'locals'),
   defaultLocale: 'en',
   autoReload: true,
   syncFiles: true,
   cookie: 'nodeapp-locale',
-  //logWarnFn: console.warn 
+  
 });
 
 export default i18n;

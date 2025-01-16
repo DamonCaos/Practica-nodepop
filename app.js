@@ -13,6 +13,7 @@ import session from 'express-session';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs'
 import i18n from 'i18n';
+import upload from './config/multer_config.js';
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -30,20 +31,20 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(i18n.init);
+//app.use(i18n.init);
 // Hacer que `session` esté disponible en todas las vistas
 app.use((req, res, next) => {
   res.locals.session = req.session;
   next();
 });
-app.use((req, res, next)=> {
+/*app.use((req, res, next)=> {
   const locale = req.query.lang || req.cookies['nodeapp-locale'] || 'en'
   res.setLocale(locale)
   if (!req.cookies['nodeapp-locale']) {
     res.cookie('nodeapp-locale',locale, {maxAge: 90000, httpOnly:true})
   }
   next();
-});
+});*/
 
 
 
@@ -57,12 +58,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Rutas principales
-app.get('/', (req, res) => {
-  res.send(res.__('wellcome_message'))
-});
+/*
 app.get('/', (req, res) => {
   res.render('index', { session: req.session });
-});
+});*/
 
 app.get('/login', (req, res) => {
   res.render('login');
