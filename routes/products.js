@@ -1,5 +1,7 @@
 import express from 'express';
 import Product from '../models/product.js';
+import upload from '../config/multer_config.js';
+
 const router = express.Router();
 
 // Listar productos
@@ -26,9 +28,7 @@ function checkAdmin(req, res, next) {
 }
 
 
-router.post('/create', checkAdmin, async (req, res) => {
-    
-});
+
 
 router.put('/edit/:id', checkAdmin, async (req, res) => {
     
@@ -43,19 +43,21 @@ router.delete('/delete/:id', checkAdmin, async (req, res) => {
 
 
 // Crear nuevo producto (asociado al usuario logueado)
-router.post('/create', async (req, res) => {
+router.post('/create', checkAdmin, upload.single('image'), async (req, res) => {
     try {
-        const { name, price, image, tags } = req.body;
-        // El owner debe ser el ID del usuario logueado
+        const { name, price, tags } = req.body;
+
+        // Crear un nuevo producto con la imagen subida
         const product = new Product({
             name,
-            owner: req.session.user._id, // Asociar el producto al usuario logueado
+            owner: req.session.user._id, 
             price,
-            image,
-            tags: tags.split(',')
+            image: req.file ? `/images/uploads/${req.file.filename}` : null, 
+            tags: tags ? tags.split(',') : [], 
         });
+
         await product.save();
-        res.redirect('/products'); // Redirigir a la lista de productos
+        res.redirect('/products');
     } catch (error) {
         console.error('Error al crear producto:', error);
         res.status(500).send('Error al crear el producto');
@@ -79,8 +81,14 @@ router.post('/edit/:id', async (req, res) => {
             name,
             price,
             image,
-            tags: tags.split(',')
+            tags: tags ? tags.split(',') : [],
         });
+
+        if (req.file) {
+            updatedData.image = `/images/uploads/${req.file.filename}`;
+        }
+        
+        await Product.findByIdAndUpdate(productId, updatedData);
         res.redirect('/products');
     } catch (error) {
         console.error('Error al editar producto:', error);
