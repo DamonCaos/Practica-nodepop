@@ -33,7 +33,7 @@
                 <% products.forEach(function(product) { %>
                     <li class="product-item">
                         <strong><%= product.name %></strong> - <%= product.price %> €
-                        <img src="<%= product.image %>" alt="<%= product.name %>" class="product-image">
+                        <img src="/public/images/uploads/<%= product.image %>" alt="<%= product.name %>" class="product-image">
                         <form action="/products/edit/<%= product._id %>" method="POST" class="product-edit-form">
                             <input type="text" name="name" value="<%= product.name %>" required>
                             <input type="text" name="owner" value="<%= product.owner %>" required>
