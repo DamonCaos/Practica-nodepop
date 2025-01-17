@@ -17,11 +17,11 @@
     <% if (session.isAuthenticated) { %>
         <section class="product-form-container">
             <h2>Crear Producto</h2>
-            <form action="/products/create" method="POST" class="product-form">
+            <form action="/products/create" method="POST" class="product-form" enctype="multipart/form-data">
                 <input type="text" name="name" placeholder="Nombre" required>
                 <input type="text" name="owner" placeholder="Propietario" required>
                 <input type="number" name="price" placeholder="Precio" required>
-                <input type="text" name="image" placeholder="URL de la imagen">
+                <input type="file" name="image" accept="image/*">
                 <input type="text" name="tags" placeholder="Tags (separados por comas)">
                 <button type="submit" class="btn">Crear</button>
             </form>

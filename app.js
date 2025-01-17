@@ -56,12 +56,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
+app.use('/images/uploads', express.static(path.join(__dirname, 'public/images/uploads')));
 // Rutas principales
-/*
+
 app.get('/', (req, res) => {
   res.render('index', { session: req.session });
-});*/
+});
 
 app.get('/login', (req, res) => {
   res.render('login');
@@ -111,6 +111,8 @@ app.post('/login', async (req, res) => {
     return res.render('login', { error: 'Hubo un error al procesar tu solicitud' });
   }
 });
+
+
 
 
 

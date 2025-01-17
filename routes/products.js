@@ -27,6 +27,13 @@ function checkAdmin(req, res, next) {
     }
 }
 
+function checkAuth(req, res, next) {
+    if (req.session.user) {
+        return next()
+    } else {
+        return res.status(403).send('Debes estar logueado para realizar esta accion')
+    }
+};
 
 
 
@@ -43,7 +50,7 @@ router.delete('/delete/:id', checkAdmin, async (req, res) => {
 
 
 // Crear nuevo producto (asociado al usuario logueado)
-router.post('/create', checkAdmin, upload.single('image'), async (req, res) => {
+router.post('/create', checkAuth, upload.single('image'), async (req, res) => {
     try {
         const { name, price, tags } = req.body;
 

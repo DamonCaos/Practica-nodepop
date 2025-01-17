@@ -6,6 +6,10 @@ const storage = multer.diskStorage({
         const route = path.join(import.meta.dirname, '..', 'public', 'images')
         callback(null, route)
 
+    },
+    filename: function(req, file, callback) {
+        const filename = `${file.fieldname}-${Date.now()}-${file.originalname}`
+        callback(null, filename)
     }
 
 })
