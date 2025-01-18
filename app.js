@@ -20,6 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.use(i18n.init);
 
 // Configurar el middleware de sesión antes de cualquier ruta
 app.use(
@@ -31,20 +32,20 @@ app.use(
   })
 );
 app.use(cookieParser());
-//app.use(i18n.init);
+
 // Hacer que `session` esté disponible en todas las vistas
 app.use((req, res, next) => {
   res.locals.session = req.session;
   next();
 });
-/*app.use((req, res, next)=> {
+app.use((req, res, next)=> {
   const locale = req.query.lang || req.cookies['nodeapp-locale'] || 'en'
   res.setLocale(locale)
   if (!req.cookies['nodeapp-locale']) {
     res.cookie('nodeapp-locale',locale, {maxAge: 90000, httpOnly:true})
   }
   next();
-});*/
+});
 
 
 
@@ -60,7 +61,8 @@ app.use('/images/uploads', express.static(path.join(__dirname, 'public/images/up
 // Rutas principales
 
 app.get('/', (req, res) => {
-  res.render('index', { session: req.session });
+  const wellcomeMessage = res.__('wellcome_message');
+  res.render('index', { session: req.session, wellcomeMessage });
 });
 
 app.get('/login', (req, res) => {
