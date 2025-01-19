@@ -12,7 +12,7 @@ import User from './models/User.js';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs'
-import i18n from 'i18n';
+import i18n from './config/i18n_config.js';
 import upload from './config/multer_config.js';
 
 // Obtener el __dirname en un módulo ES6

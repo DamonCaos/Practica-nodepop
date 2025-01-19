@@ -11,7 +11,7 @@
         <h1><%= __('wellcome_message') %></h1>
         <a href="/?lang=es">Español</a>
         <a href="/?lang=en">English</a>
-        <h3>Tu tienda online de confianza</h3>
+        <h3><%= __('subtitule') %></h3>
     </header>
 
     <nav class="nav-buttons">
@@ -19,6 +19,7 @@
         <a href="/login">Login</a>
         <a href="/contact">Contact</a>
         <% if (session.isAuthenticated) { %>
+            <p>Bienvenido, <%= session.user.name %> </p>
             <a href="/products">
                 <button type="button">Gestionar Productos</button>
             </a>
