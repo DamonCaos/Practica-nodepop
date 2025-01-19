@@ -3,5 +3,8 @@
 	"create_product": "Create Product",
 	"subtitule": "Your confidence online shop",
 	"products": "Products",
-	"Products": "Products"
+	"Products": "Products",
+	"name": "Name",
+	"owner": "Owner",
+	"price": "Price"
 }

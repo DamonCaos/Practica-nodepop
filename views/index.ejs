@@ -12,9 +12,9 @@
         
         <h3><%= __('subtitule') %></h3>
     </header>
-    <div>
+    <div class="lang-selector">
         <% getLocales().forEach( lang => { %>
-            <a href="/change-locale/<%= lang %>"><%= lang %></a>
+            <a href="/change-locale/<%= lang %>"><img src="/public/images/<%= lang %>.png" alt="<%= lang %>"></a>
 
             <%  }) %> 
     </div>
@@ -26,7 +26,7 @@
         <% if (session.isAuthenticated) { %>
             <p>Bienvenido, <%= session.user.name %> </p>
             <a href="/products">
-                <button type="button">Gestionar Productos</button>
+                <button type="button"><%= __('products')  %></button>
             </a>
         <% } %>
     </nav>

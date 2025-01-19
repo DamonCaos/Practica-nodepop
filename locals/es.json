@@ -3,5 +3,8 @@
 	"create_product": "Crear Producto",
 	"subtitule": "Tu tienda online de confianza",
 	"products": "Productos",
-	"Products": "Products"
+	"Products": "Products",
+	"name": "Nombre",
+	"owner": "Propietario",
+	"price": "Precio"
 }

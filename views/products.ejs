@@ -11,16 +11,21 @@
 <body>
 
     <header class="header">
-        <h1>Gestión de Productos</h1>
+        <h1><%= __('products') %></h1>
     </header>
+    <div class="lang-selector">
+        <% getLocales().forEach( lang => { %>
+            <a href="/change-locale/<%= lang %>"><img src="/public/images/<%= lang %>.png" alt="<%= lang %>"></a>
 
+            <%  }) %> 
+    </div>
     <% if (session.isAuthenticated) { %>
         <section class="product-form-container">
             <h2>Crear Producto</h2>
             <form action="/products/create" method="POST" class="product-form" enctype="multipart/form-data">
-                <input type="text" name="name" placeholder="Nombre" required>
-                <input type="text" name="owner" placeholder="Propietario" required>
-                <input type="number" name="price" placeholder="Precio" required>
+                <input type="text" name="name" placeholder=<%= __('name')  %> required>
+                <input type="text" name="owner" placeholder=<%= __('owner')  %> required>
+                <input type="number" name="price" placeholder=<%= __('price')  %> required>
                 <input type="file" name="image" accept="image/*">
                 <input type="text" name="tags" placeholder="Tags (separados por comas)">
                 <button type="submit" class="btn">Crear</button>
