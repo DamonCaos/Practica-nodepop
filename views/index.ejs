@@ -9,10 +9,15 @@
 <body>
     <header class="header">
         <h1><%= __('wellcome_message') %></h1>
-        <a href="/?lang=es">Español</a>
-        <a href="/?lang=en">English</a>
+        
         <h3><%= __('subtitule') %></h3>
     </header>
+    <div>
+        <% getLocales().forEach( lang => { %>
+            <a href="/change-locale/<%= lang %>"><%= lang %></a>
+
+            <%  }) %> 
+    </div>
 
     <nav class="nav-buttons">
         <a href="/">Home</a>

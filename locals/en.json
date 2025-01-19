@@ -1,6 +1,7 @@
 {
-    "wellcome_message": "Wellcome to Nodepop!",
-    "create_product": "Create Product",
-    "subtitule": "Your confidence online shop"
-
+	"wellcome_message": "Wellcome to Nodepop!",
+	"create_product": "Create Product",
+	"subtitule": "Your confidence online shop",
+	"products": "Products",
+	"Products": "Products"
 }

@@ -14,6 +14,7 @@ import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs'
 import i18n from './config/i18n_config.js';
 import upload from './config/multer_config.js';
+import * as langController from './routes/langController.js'
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,7 @@ const app = express();
 
 app.use(cookieParser());
 app.use(i18n.init);
+app.get('/change-locale/:locale', langController.changeLocale)
 
 // Configurar el middleware de sesión antes de cualquier ruta
 app.use(
