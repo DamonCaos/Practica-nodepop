@@ -20,6 +20,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+app.use(cookieParser());
 app.use(i18n.init);
 
 // Configurar el middleware de sesión antes de cualquier ruta
@@ -31,7 +33,7 @@ app.use(
     cookie: { secure: false },
   })
 );
-app.use(cookieParser());
+
 
 // Hacer que `session` esté disponible en todas las vistas
 app.use((req, res, next) => {
@@ -60,10 +62,23 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/images/uploads', express.static(path.join(__dirname, 'public/images/uploads')));
 // Rutas principales
 
-app.get('/', (req, res) => {
-  const wellcomeMessage = res.__('wellcome_message');
+app.get('/',(req, res) =>{
+  try {
+    res.render('index', {session: req.session})
+  } catch (error) {
+    res.status(500).send('server error')
+  }
+})
+
+/* app.get('/', (req, res) => {
+  try {
+    const wellcomeMessage = res.__('wellcome_message');
   res.render('index', { session: req.session, wellcomeMessage });
-});
+  } catch (error) {
+    console.error('error en i18n:', error);
+    res.status(500).send('error interno del servidor')
+  }
+}); */
 
 app.get('/login', (req, res) => {
   res.render('login');

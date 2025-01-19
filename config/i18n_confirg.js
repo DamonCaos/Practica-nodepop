@@ -9,8 +9,7 @@ i18n.configure({
   autoReload: true,
   syncFiles: true,
   cookie: 'nodeapp-locale',
-  logDebugFn: (msg) => console.debug('i18n Debug:', msg),
-  logWarnFn: (msg) => console.warn('i18n Warning:', msg)
+  
 });
 
 export default i18n;
