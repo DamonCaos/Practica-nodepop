@@ -6,5 +6,6 @@
 	"Products": "Products",
 	"name": "Nombre",
 	"owner": "Propietario",
-	"price": "Precio"
+	"price": "Precio",
+	"password": "Contraseña"
 }

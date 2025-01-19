@@ -10,7 +10,12 @@
     <header class="header">
         <h1>Login</h1>
     </header>
+    <div class="lang-selector">
+        <% getLocales().forEach( lang => { %>
+            <a href="/change-locale/<%= lang %>"><img src="/public/images/<%= lang %>.png" alt="<%= lang %>"></a>
 
+            <%  }) %> 
+    </div>
 
     <div class="login-container">
         <form class="login-form" action="/login" method="POST">
@@ -19,7 +24,7 @@
                 <input type="email" id="email" name="email" required>
             </div>
             <div>
-                <label for="password">Password:</label>
+                <label for="password"><%= __('password')  %>:</label>
                 <input type="password"  name="password" required>
             </div>
             <button type="submit">Login</button>

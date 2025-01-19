@@ -15,6 +15,8 @@ import bcrypt from 'bcryptjs'
 import i18n from './config/i18n_config.js';
 import upload from './config/multer_config.js';
 import * as langController from './routes/langController.js'
+import apiRouter from './routes/api.js';
+
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);

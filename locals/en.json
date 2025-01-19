@@ -6,5 +6,6 @@
 	"Products": "Products",
 	"name": "Name",
 	"owner": "Owner",
-	"price": "Price"
+	"price": "Price",
+	"password": "password"
 }

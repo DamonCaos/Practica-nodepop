@@ -1,8 +1,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import Product from '../models/product';
-import User from '../models/User';
+import Product from '../models/product.js';
+import User from '../models/User.js';
 import { token } from 'morgan';
 
 const router = express.Router();
@@ -11,20 +11,22 @@ const SECRET_KEY = 'ljkdbkhjbsdlkg';
 
 //Endpoints and middlewares
 
+
+
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
-        if(!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).json({ error: 'Invalid creedentials' })
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
-        const token = jwt.sign({ id: user._id}, SECRET_KEY,
-            res.json({ token })
-        )
+
+        // Generar el token
+        const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' });
+        res.json({ token });
     } catch (error) {
-        console.error('Error en login', error);
-        res.status(500).json({ error: 'Server error'});
-        
+        console.error('Error en login:', error);
+        res.status(500).json({ error: 'Server error' });
     }
 });
 
