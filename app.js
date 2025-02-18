@@ -16,7 +16,7 @@ import i18n from './config/i18n_config.js';
 import upload from './config/multer_config.js';
 import * as langController from './routes/langController.js'
 import apiRouter from './routes/api.js';
-
+import router from './routes/api.js';
 
 // Obtener el __dirname en un módulo ES6
 const __filename = fileURLToPath(import.meta.url);
@@ -24,6 +24,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.use('/api', router);
 app.use(cookieParser());
 app.use(i18n.init);
 app.get('/change-locale/:locale', langController.changeLocale)
