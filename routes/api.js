@@ -114,4 +114,60 @@ router.get('/products/:productID', autMiddleware, async (req, res) => {
     }
 });
 
+router.put('/products/:productID', autMiddleware, upload.single('image'), async (req, res) => {
+    try {
+        const { productID } = req.params;
+        const { name, price, tags } = req.body;
+
+        // Buscar el producto y validar que pertenece al usuario autenticado
+        const product = await Product.findOne({ _id: productID, owner: req.user.id });
+
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado o no autorizado' });
+        }
+
+        // Actualizar los campos proporcionados
+        if (name) product.name = name;
+        if (price) product.price = Number(price);
+        if (tags) product.tags = tags.split(',');
+
+        // Si se sube una nueva imagen, actualizarla
+        if (req.file) {
+            product.image = `/images/uploads/${req.file.filename}`;
+        }
+
+        await product.save();
+
+        res.json({ message: 'Producto actualizado', product });
+
+    } catch (error) {
+        console.error('Error al actualizar producto:', error);
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+
+router.delete('/products/:productID', autMiddleware, async (req, res) => {
+    try {
+        const { productID } = req.params;
+
+        // Buscar el producto y validar que pertenece al usuario autenticado
+        const product = await Product.findOne({ _id: productID, owner: req.user.id });
+
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado o no autorizado' });
+        }
+
+        // Eliminar el producto
+        await Product.deleteOne({ _id: productID });
+
+        res.json({ message: 'Producto eliminado' });
+
+    } catch (error) {
+        console.error('Error al eliminar producto:', error);
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+
 export default router;
