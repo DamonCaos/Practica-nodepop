@@ -4,12 +4,34 @@ import bcrypt from 'bcryptjs';
 import Product from '../models/product.js';
 import User from '../models/User.js';
 import upload from '../config/multer_config.js';
-import autMiddleware from '../middlewares/auth.js'; // Corregido el path
+import autMiddleware from '../middlewares/auth.js'; 
 
 const router = express.Router();
 const SECRET_KEY = 'ljkdbkhjbsdlkg';
 
-// Endpoint de login
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     summary: Iniciar sesión y obtener un token JWT
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: admin@example.com
+ *               password:
+ *                 type: string
+ *                 example: 1234
+ *     responses:
+ *       200:
+ *         description: Login exitoso, devuelve un token JWT
+ */
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -18,7 +40,6 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Generar el token
         const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' });
         res.json({ token });
     } catch (error) {
@@ -27,12 +48,23 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Obtener lista de productos con filtros
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Obtener todos los productos del usuario autenticado
+ *     tags: [Products]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de productos del usuario autenticado
+ */
 router.get('/products', autMiddleware, async (req, res) => {
     try {
         const { name, priceMin, priceMax, tags, sort, page = 1, limit = 10, fields } = req.query;
 
-        let filter = { owner: req.user.id }; // Solo ver sus productos
+        let filter = { owner: req.user.id };
 
         if (name) filter.name = new RegExp(name, 'i');
         if (priceMin || priceMax) {
@@ -69,7 +101,18 @@ router.get('/products', autMiddleware, async (req, res) => {
     }
 });
 
-// Crear un producto
+/**
+ * @swagger
+ * /api/products:
+ *   post:
+ *     summary: Crear un nuevo producto
+ *     tags: [Products]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Producto creado exitosamente
+ */
 router.post('/products', autMiddleware, upload.single('image'), async (req, res) => {
     try {
         const { name, price, tags } = req.body;
@@ -95,11 +138,27 @@ router.post('/products', autMiddleware, upload.single('image'), async (req, res)
     }
 });
 
-// Obtener un solo producto por ID
+/**
+ * @swagger
+ * /api/products/{productID}:
+ *   get:
+ *     summary: Obtener un producto por ID
+ *     tags: [Products]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Producto encontrado
+ */
 router.get('/products/:productID', autMiddleware, async (req, res) => {
     try {
         const { productID } = req.params;
-
         const product = await Product.findOne({ _id: productID, owner: req.user.id });
 
         if (!product) {
@@ -114,24 +173,33 @@ router.get('/products/:productID', autMiddleware, async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/products/{productID}:
+ *   put:
+ *     summary: Actualizar un producto
+ *     tags: [Products]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Producto actualizado exitosamente
+ */
 router.put('/products/:productID', autMiddleware, upload.single('image'), async (req, res) => {
     try {
         const { productID } = req.params;
         const { name, price, tags } = req.body;
 
-        // Buscar el producto y validar que pertenece al usuario autenticado
         const product = await Product.findOne({ _id: productID, owner: req.user.id });
 
         if (!product) {
             return res.status(404).json({ error: 'Producto no encontrado o no autorizado' });
         }
 
-        // Actualizar los campos proporcionados
         if (name) product.name = name;
         if (price) product.price = Number(price);
         if (tags) product.tags = tags.split(',');
 
-        // Si se sube una nueva imagen, actualizarla
         if (req.file) {
             product.image = `/images/uploads/${req.file.filename}`;
         }
@@ -146,19 +214,27 @@ router.put('/products/:productID', autMiddleware, upload.single('image'), async 
     }
 });
 
-
+/**
+ * @swagger
+ * /api/products/{productID}:
+ *   delete:
+ *     summary: Eliminar un producto
+ *     tags: [Products]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Producto eliminado exitosamente
+ */
 router.delete('/products/:productID', autMiddleware, async (req, res) => {
     try {
         const { productID } = req.params;
-
-        // Buscar el producto y validar que pertenece al usuario autenticado
         const product = await Product.findOne({ _id: productID, owner: req.user.id });
 
         if (!product) {
             return res.status(404).json({ error: 'Producto no encontrado o no autorizado' });
         }
 
-        // Eliminar el producto
         await Product.deleteOne({ _id: productID });
 
         res.json({ message: 'Producto eliminado' });
@@ -169,5 +245,5 @@ router.delete('/products/:productID', autMiddleware, async (req, res) => {
     }
 });
 
-
 export default router;
+
